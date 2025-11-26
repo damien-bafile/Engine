@@ -1,9 +1,22 @@
 use bevy::prelude::*;
 
-fn main() {
-    App::new().add_systems(Update, hello_world_system).run();
-}
+mod camera;
+mod player;
+mod world;
 
-fn hello_world_system() {
-    println!("Hello, world!");
+use camera::CameraPlugin;
+use player::PlayerPlugin;
+use world::floor::FloorPlugin;
+use world::lighting::LightingPlugin;
+
+fn main() {
+    App::new()
+        .add_plugins((
+            DefaultPlugins,
+            CameraPlugin,
+            FloorPlugin,
+            LightingPlugin,
+            PlayerPlugin,
+        ))
+        .run();
 }
