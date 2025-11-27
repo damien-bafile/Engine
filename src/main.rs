@@ -1,4 +1,5 @@
 use bevy::prelude::*;
+use iyes_perf_ui::prelude::*;
 
 mod camera;
 mod player;
@@ -18,5 +19,10 @@ fn main() {
             LightingPlugin,
             PlayerPlugin,
         ))
+        .add_plugins(bevy::diagnostic::FrameTimeDiagnosticsPlugin::default())
+        .add_plugins(bevy::diagnostic::EntityCountDiagnosticsPlugin)
+        .add_plugins(bevy::diagnostic::SystemInformationDiagnosticsPlugin)
+        .add_plugins(bevy::render::diagnostic::RenderDiagnosticsPlugin)
+        .add_plugins(PerfUiPlugin)
         .run();
 }
