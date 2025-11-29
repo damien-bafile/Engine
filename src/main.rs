@@ -1,14 +1,13 @@
+use bevy::diagnostic::{
+    EntityCountDiagnosticsPlugin, FrameTimeDiagnosticsPlugin, SystemInformationDiagnosticsPlugin,
+};
 use bevy::prelude::*;
+use bevy::render::diagnostic::RenderDiagnosticsPlugin;
+use engine::camera::CameraPlugin;
+use engine::player::PlayerPlugin;
+use engine::world::floor::FloorPlugin;
+use engine::world::lighting::LightingPlugin;
 use iyes_perf_ui::prelude::*;
-
-mod camera;
-mod player;
-mod world;
-
-use camera::CameraPlugin;
-use player::PlayerPlugin;
-use world::floor::FloorPlugin;
-use world::lighting::LightingPlugin;
 
 fn main() {
     App::new()
@@ -18,11 +17,11 @@ fn main() {
             FloorPlugin,
             LightingPlugin,
             PlayerPlugin,
+            FrameTimeDiagnosticsPlugin::default(),
+            EntityCountDiagnosticsPlugin,
+            SystemInformationDiagnosticsPlugin,
+            RenderDiagnosticsPlugin,
+            PerfUiPlugin,
         ))
-        .add_plugins(bevy::diagnostic::FrameTimeDiagnosticsPlugin::default())
-        .add_plugins(bevy::diagnostic::EntityCountDiagnosticsPlugin)
-        .add_plugins(bevy::diagnostic::SystemInformationDiagnosticsPlugin)
-        .add_plugins(bevy::render::diagnostic::RenderDiagnosticsPlugin)
-        .add_plugins(PerfUiPlugin)
         .run();
 }
