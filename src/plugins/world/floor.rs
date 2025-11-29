@@ -1,4 +1,5 @@
 use ::bevy::prelude::*;
+use std::f32::consts::FRAC_PI_2;
 
 pub struct FloorPlugin;
 
@@ -16,7 +17,7 @@ fn spawn_floor(
     let floor = (
         Mesh3d(meshes.add(Circle::new(4.0))),
         MeshMaterial3d(materials.add(Color::WHITE)),
-        Transform::from_rotation(Quat::from_rotation_x(-std::f32::consts::FRAC_2_PI)),
+        Transform::from_xyz(0.0, 0.0, 0.0).with_rotation(Quat::from_rotation_x(-FRAC_PI_2)),
     );
 
     commands.spawn(floor);
