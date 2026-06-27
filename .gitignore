@@ -12,5 +12,4 @@ engine
 .#*
 /.agents/skills
 /AGENTS.md
-/Cargo.lock
 /skills-lock.json
