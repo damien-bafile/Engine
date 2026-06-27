@@ -5,3 +5,12 @@
 Thumbs.db
 # Test commit
 engine
+
+# Emacs backup / auto-save / lock files
+*~
+\#*\#
+.#*
+/.agents/skills
+/AGENTS.md
+/Cargo.lock
+/skills-lock.json

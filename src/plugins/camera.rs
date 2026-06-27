@@ -1,6 +1,6 @@
-use bevy::{input::mouse::AccumulatedMouseMotion, prelude::*};
-use iyes_perf_ui::prelude::*;
+use bevy::{dev_tools::fps_overlay::FpsOverlayPlugin, input::mouse::AccumulatedMouseMotion, prelude::*};
 use std::{f32::consts::FRAC_PI_2, ops::Range};
+use crate::plugins::terrain_ui::{terrain_ui_panel, EguiActive};
 
 pub struct CameraPlugin;
 
@@ -30,17 +30,18 @@ impl Plugin for CameraPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<CameraSettings>();
         app.add_systems(Startup, spawn_camera);
-        app.add_systems(Update, orbit);
+        app.add_systems(Update, orbit.after(terrain_ui_panel));
+        app.add_plugins(FpsOverlayPlugin::default());
     }
 }
 
 fn spawn_camera(mut commands: Commands) {
     let camera = (
         Camera3d::default(),
-        Transform::from_xyz(5.0, 5.0, 5.0).looking_at(Vec3::ZERO, Vec3::Y),
+        Transform::from_xyz(0.0, 2.0, 10.0).looking_at(Vec3::new(0.0, 1.0, 0.0), Vec3::Y),
     );
     commands.spawn(camera);
-    commands.spawn(PerfUiAllEntries::default());
+
 }
 
 fn orbit(
@@ -49,7 +50,12 @@ fn orbit(
     mouse_buttons: Res<ButtonInput<MouseButton>>,
     mouse_motion: Res<AccumulatedMouseMotion>,
     time: Res<Time>,
+    egui_active: Res<EguiActive>,
 ) {
+    if egui_active.0 {
+        return;
+    }
+
     let delta = mouse_motion.delta;
     let mut delta_roll = 0.0;
 
@@ -75,6 +81,6 @@ fn orbit(
     let yaw = yaw + delta_yaw;
     camera.rotation = Quat::from_euler(EulerRot::YXZ, yaw, pitch, roll);
 
-    let target = Vec3::ZERO;
+    let target = Vec3::new(0.0, 1.0, 0.0);
     camera.translation = target - camera.forward() * camera_settings.orbit_distance;
 }
