@@ -6,14 +6,22 @@ use engine::plugins::world::floor::FloorPlugin;
 use engine::plugins::world::lighting::LightingPlugin;
 
 fn main() {
-    App::new()
-        .add_plugins((
+
+    let args: Vec<String> = std::env::args().collect();
+    let debug = args.contains(&"debug".to_string());
+
+    let mut app = App::new();
+    app.add_plugins((
             DefaultPlugins,
             CameraPlugin,
             CarPlugin,
             FloorPlugin,
             LightingPlugin,
-            TerrainUiPlugin,
-        ))
-        .run();
+    ));
+
+    if debug {
+        app.add_plugins(TerrainUiPlugin);
+    }
+        
+    app.run();
 }

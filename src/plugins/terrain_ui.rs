@@ -29,11 +29,13 @@ pub fn terrain_ui_panel(
         return;
     }
 
+    let Ok(ctx) = contexts.ctx_mut() else { return };
+
     let mut regenerate = false;
 
     egui::Window::new("Terrain Config")
         .default_width(280.0)
-        .show(contexts.ctx_mut().unwrap(), |ui| {
+        .show(ctx, |ui| {
             ui.add(
                 egui::Slider::new(&mut settings.size, 4..=500)
                     .text("Grid Size"),
